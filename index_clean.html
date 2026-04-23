@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omega Speedmaster - Silver Snoopy – Nordhorne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #1a1a1a;
+      --white: #ffffff;
+      --gray-light: #f5f5f5;
+      --gray-mid: #e0e0e0;
+      --gray-text: #6b6b6b;
+      --border: #e5e5e5;
+      --font: 'Barlow', sans-serif;
+    }
+
+    body { font-family: var(--font); color: var(--black); background: var(--white); font-size: 15px; }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: default; font-family: var(--font); }
+    img { max-width: 100%; display: block; }
+
+    /* ── ANNOUNCEMENT BAR ── */
+    .announce-bar {
+      background: var(--black);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      overflow: hidden;
+      padding: 10px 0;
+      position: relative;
+    }
+    .announce-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 30s linear infinite;
+    }
+    .announce-track span {
+      padding: 0 32px;
+    }
+    .announce-track span::after {
+      content: '•';
+      margin-left: 32px;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    nav {
+      display: flex;
+      gap: 28px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    nav a { color: var(--black); opacity: 0.8; }
+    .header-icons { display: flex; gap: 18px; align-items: center; }
+    .header-icons svg { width: 20px; height: 20px; }
+
+    /* ── PRODUCT SECTION ── */
+    .product-wrapper {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: flex-start;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .thumbs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 76px;
+      flex-shrink: 0;
+    }
+    .thumb {
+      width: 76px;
+      height: 76px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.15s;
+      border-radius: 2px;
+    }
+    .thumb.active { border-color: var(--black); }
+    .main-img-wrap { flex: 1; }
+    .main-img-wrap img {
+      width: 100%;
+      object-fit: contain;
+      max-height: 580px;
+      transition: opacity 0.2s;
+      border-radius: 2px;
+    }
+
+    /* ── PRODUCT INFO ── */
+    .product-info { display: flex; flex-direction: column; gap: 20px; }
+
+    /* Trustpilot */
+    .trustpilot {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stars { display: flex; gap: 2px; }
+    .star {
+      width: 20px; height: 20px;
+      background: #00b67a;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .trust-score { font-size: 14px; font-weight: 700; }
+    .trust-reviews { font-size: 13px; color: var(--gray-text); }
+    .trust-reviews strong { color: var(--black); }
+
+    /* Title */
+    .product-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    /* Viewers */
+    .viewers {
+      font-size: 13px;
+      color: var(--gray-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .viewers::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: #e63946;
+      border-radius: 50%;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Price */
+    .price-wrap { display: flex; align-items: baseline; gap: 12px; }
+    .price-compare {
+      font-size: 18px;
+      color: var(--gray-text);
+      text-decoration: line-through;
+    }
+    .price-main {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    /* Variant */
+    .variant-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .variant-options { display: flex; gap: 10px; }
+    .variant-btn {
+      padding: 8px 18px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 2px;
+      cursor: default;
+    }
+    .variant-btn.selected {
+      border-color: var(--black);
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* Bundles */
+    .bundles-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gray-text);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      text-transform: uppercase;
+    }
+    .bundle-option {
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+      cursor: default;
+    }
+    .bundle-option.selected { border-color: var(--black); }
+    .bundle-radio {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--black);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .bundle-radio.selected::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--black);
+    }
+    .bundle-info { flex: 1; }
+    .bundle-name { font-weight: 600; font-size: 14px; }
+    .bundle-desc { font-size: 12px; color: var(--gray-text); margin-top: 4px; }
+    .bundle-price { text-align: right; }
+    .bundle-price-main { font-weight: 700; font-size: 16px; }
+    .bundle-price-compare { font-size: 13px; color: var(--gray-text); text-decoration: line-through; }
+
+    /* ADD TO CART */
+    .atc-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: block;
+      text-align: center;
+    }
+    .atc-btn:hover { background: #333; transform: translateY(-1px); }
+    .atc-btn:active { transform: translateY(0); }
+
+    /* Payment icons */
+    .payment-icons {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pay-icon {
+      height: 26px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-text);
+      min-width: 42px;
+    }
+
+    /* ── TABS ── */
+    .tabs-section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 40px;
+    }
+    .tabs-nav {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .tab-btn {
+      padding: 14px 24px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--gray-text);
+      cursor: default;
+    }
+    .tab-btn.active {
+      color: var(--black);
+      border-bottom-color: var(--black);
+    }
+
+    /* ── DESCRIPTION ── */
+    .description {
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .description h1, .description h2 {
+      text-align: center;
+      margin: 32px 0 16px;
+      font-size: 20px;
+      letter-spacing: 0.04em;
+    }
+    .description p { margin-bottom: 16px; text-align: center; color: var(--gray-text); }
+    .description ul {
+      list-style: none;
+      margin: 0 0 24px;
+      padding: 0;
+    }
+    .description ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      color: var(--gray-text);
+    }
+    .description ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--black);
+      font-weight: 700;
+    }
+    .description img {
+      width: 100%;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+    .description .garantia-img {
+      width: 438px;
+      max-width: 100%;
+      margin: 32px auto;
+      display: block;
+    }
+
+    /* ── SHIPPING ICONS ── */
+    .shipping-section {
+      background: var(--gray-light);
+      padding: 48px 40px;
+      margin-top: 48px;
+    }
+    .shipping-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+    .ship-item { text-align: center; }
+    .ship-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ship-icon svg { width: 32px; height: 32px; }
+    .ship-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ship-text { font-size: 13px; color: var(--gray-text); font-style: italic; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.7);
+      padding: 64px 40px 32px;
+      margin-top: 0;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .footer-desc { font-size: 13px; line-height: 1.7; }
+    .footer-col h4 {
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; font-size: 13px; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 24px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer-pay-icons { display: flex; gap: 6px; }
+    .footer-pay-icon {
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      padding: 3px 7px;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .product-wrapper { grid-template-columns: 1fr; gap: 32px; }
+      .shipping-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      nav { display: none; }
+      header { padding: 0 20px; }
+      .product-wrapper { padding: 0 20px; }
+      .tabs-section { padding: 0 20px; }
+    }
+    @media (max-width: 560px) {
+      .shipping-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .bundle-option { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announce-bar">
+    <div class="announce-track">
+      <span>FREE SHIPPING ON ALL ORDERS</span>
+      <span>UP TO 70% OFF STOREWIDE</span>
+      <span>FREE SHIPPING ON ALL ORDERS</span>
+      <span>UP TO 70% OFF STOREWIDE</span>
+      <span>FREE SHIPPING ON ALL ORDERS</span>
+      <span>UP TO 70% OFF STOREWIDE</span>
+      <span>FREE SHIPPING ON ALL ORDERS</span>
+      <span>UP TO 70% OFF STOREWIDE</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Nordhorne</div>
+    <nav>
+      <a href="#">Home Page</a>
+      <a href="#">Best Sellers</a>
+      <a href="#">Contact</a>
+      <a href="#">About Us</a>
+      <a href="#">Track your order</a>
+    </nav>
+    <div class="header-icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+  </header>
+
+  <!-- PRODUCT -->
+  <div class="product-wrapper">
+
+    <!-- GALLERY -->
+    <div class="gallery">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="main-img-wrap">
+        <img id="mainImg" src="images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png" alt="Omega Speedmaster Silver Snoopy">
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+
+      <!-- Trustpilot -->
+      <div>
+        <div class="trustpilot">
+          <div class="stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+          </div>
+          <span class="trust-score">TrustScore 4.9/5.0</span>
+        </div>
+        <div class="trust-reviews" style="margin-top:6px;">Based on <strong>+2,500 customer reviews</strong></div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="product-title">Omega Speedmaster<br>- Silver Snoopy</h1>
+
+      <!-- Viewers -->
+      <div class="viewers" id="viewers">40 People are viewing this right now</div>
+
+      <!-- Price -->
+      <div class="price-wrap">
+        <span class="price-compare">$230.90</span>
+        <span class="price-main">$76.90</span>
+      </div>
+
+      <!-- Variant -->
+      <div>
+        <div class="variant-label">Watch Strap Material: <strong>Nylon</strong></div>
+        <div class="variant-options">
+          <button class="variant-btn selected">Nylon</button>
+          <button class="variant-btn">Stainless steel</button>
+        </div>
+      </div>
+
+      <!-- Bundles -->
+      <div>
+        <div class="bundles-title">Get More, Pay Less</div>
+        <br>
+        <div class="bundle-option selected">
+          <div class="bundle-radio selected"></div>
+          <div class="bundle-info">
+            <div class="bundle-name">BUY 1</div>
+            <div class="bundle-desc">Omega Speedmaster – Silver Snoopy · Nylon</div>
+          </div>
+          <div class="bundle-price">
+            <div class="bundle-price-main">$76.90</div>
+            <div class="bundle-price-compare">$230.90</div>
+          </div>
+        </div>
+        <div class="bundle-option">
+          <div class="bundle-radio"></div>
+          <div class="bundle-info">
+            <div class="bundle-name">BUY 2 <span style="font-size:11px;color:#e63946;font-weight:700;">60% OFF</span></div>
+            <div class="bundle-desc">Omega Speedmaster – Silver Snoopy × 2</div>
+          </div>
+          <div class="bundle-price">
+            <div class="bundle-price-main">$130.74</div>
+            <div class="bundle-price-compare">$461.80</div>
+          </div>
+        </div>
+        <div class="bundle-option">
+          <div class="bundle-radio"></div>
+          <div class="bundle-info">
+            <div class="bundle-name">BUY 3 <span style="font-size:11px;color:#e63946;font-weight:700;">65% OFF</span></div>
+            <div class="bundle-desc">Omega Speedmaster – Silver Snoopy × 3</div>
+          </div>
+          <div class="bundle-price">
+            <div class="bundle-price-main">$184.50</div>
+            <div class="bundle-price-compare">$692.70</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD TO CART -->
+      <a href="LINK_AQUI" class="atc-btn">Add to Cart</a>
+
+      <!-- Payment icons -->
+      <div class="payment-icons">
+        <div class="pay-icon">VISA</div>
+        <div class="pay-icon">MC</div>
+        <div class="pay-icon">AMEX</div>
+        <div class="pay-icon">PayPal</div>
+        <div class="pay-icon">Apple Pay</div>
+        <div class="pay-icon">Google Pay</div>
+        <div class="pay-icon">Shop</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TABS + DESCRIPTION -->
+  <div class="tabs-section">
+    <div class="tabs-nav">
+      <button class="tab-btn active">Description</button>
+      <button class="tab-btn">Shipping</button>
+      <button class="tab-btn">Returns</button>
+    </div>
+
+    <div class="description">
+      <h1><strong>A watch that screams exclusivity — without saying a word.</strong></h1>
+      <p><img src="images/imagem_02_2f3dc9a0-85fb-4a21-875b-b619a38bdff3.png" alt=""></p>
+      <h2><strong>SLEEK. MODERN. COLLECTIBLE.</strong></h2>
+      <p>Yes, it's an Omega.<br>Yes, it's a Snoopy Edition.<br>And yes — it's <strong>in style right now</strong>, spotted on influencers, collectors, and those who know what matters.</p>
+      <p>If you're after a luxury timepiece that <strong>turns heads without being loud</strong>, you've just found it.</p>
+      <p><img src="images/imagem_01_fc704978-a752-47e0-a20b-20100ee7855e.png" alt=""></p>
+      <h2><strong>A LOOK THAT MAKES AN IMPRESSION IN SECONDS:</strong></h2>
+      <ul>
+        <li><strong>Solid silver dial</strong> with deep blue subdials</li>
+        <li><strong>Astronaut Snoopy</strong> at 9 o'clock — subtle but unmissable</li>
+        <li>High-gloss ceramic bezel in navy blue</li>
+        <li>Super-LumiNova® hands and markers for low-light glow</li>
+        <li>Luxuriously finished case with a slim profile — <strong>dress it up or down</strong></li>
+      </ul>
+      <p><img src="images/Gif_01.gif" alt=""></p>
+      <h2><strong>ENGINEERING THAT BACKS THE STYLE</strong></h2>
+      <ul>
+        <li>Automatic Omega 3861 movement — smooth, reliable, precise</li>
+        <li><strong>50-hour power reserve</strong></li>
+        <li>Sapphire caseback with Snoopy animation in Earth orbit</li>
+        <li>Fully functional chronograph — not just good-looking, it performs</li>
+      </ul>
+      <p><img src="images/imagem_07_cbe2ec9f-5598-4cd5-91c5-a35898b491a6.png" alt=""></p>
+      <p><img src="images/imagem_08_a5c758bb-d5ab-4ea6-a0f9-5b0daf9e8f38.png" alt=""></p>
+      <h2><strong>WHY EVERYONE WANTS THIS MODEL:</strong></h2>
+      <ul>
+        <li><strong>Unique but not flashy</strong></li>
+        <li>Fits both casual and formal outfits</li>
+        <li>Signals <strong>taste, status, and confidence</strong></li>
+        <li>Trending among watch lovers and collectors alike</li>
+      </ul>
+      <p><img src="images/imagem_05_f6dabcd1-c18e-4749-8429-fac11da120c0.png" alt=""></p>
+      <h2><strong>WHAT'S INCLUDED:</strong></h2>
+      <ul>
+        <li>1x Omega Speedmaster Silver Snoopy Edition</li>
+        <li>Luxury-themed presentation box</li>
+        <li>Digital manual + certificate of authenticity</li>
+        <li>12-month warranty</li>
+        <li>Fully insured & tracked delivery</li>
+      </ul>
+      <p><img src="images/imagem_13.png" alt=""></p>
+      <p><img src="images/imagem_04_0ca3d986-e710-4cd2-a9b5-4814c80794fa.png" alt=""></p>
+      <p><img src="images/imagem09_a9bcb182-2c00-4c25-b8f3-cef56efc168b.png" alt=""></p>
+      <img class="garantia-img" src="images/garantia.png" alt="Garantia">
+    </div>
+  </div>
+
+  <!-- SHIPPING FEATURES -->
+  <div class="shipping-section">
+    <div class="shipping-grid">
+      <div class="ship-item">
+        <div class="ship-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div class="ship-title">Free Shipping</div>
+        <div class="ship-text">Shipped within 24h from our warehouse – no minimum spend.</div>
+      </div>
+      <div class="ship-item">
+        <div class="ship-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="ship-title">Support 24/7</div>
+        <div class="ship-text">Contact us 24 hours a day, 7 days a week.</div>
+      </div>
+      <div class="ship-item">
+        <div class="ship-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        </div>
+        <div class="ship-title">30 Days Return</div>
+        <div class="ship-text">Simply return it within 30 days for an exchange.</div>
+      </div>
+      <div class="ship-item">
+        <div class="ship-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="ship-title">Military-Grade Durability</div>
+        <div class="ship-text">Crafted to military standards with premium materials.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">NORDHORNE</div>
+        <div class="footer-desc">Premium timepieces for those who appreciate craftsmanship without compromise.</div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li>Home Page</li>
+          <li>Best Sellers</li>
+          <li>New Arrivals</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li>Contact Us</li>
+          <li>Track Your Order</li>
+          <li>Returns & Exchanges</li>
+          <li>FAQ</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li>About Us</li>
+          <li>Privacy Policy</li>
+          <li>Terms of Service</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Nordhorne. All rights reserved.</span>
+      <div class="footer-pay-icons">
+        <div class="footer-pay-icon">VISA</div>
+        <div class="footer-pay-icon">MC</div>
+        <div class="footer-pay-icon">AMEX</div>
+        <div class="footer-pay-icon">PayPal</div>
+        <div class="footer-pay-icon">Apple Pay</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── GALLERY ──
+    var images = [
+      { main: "images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png",  thumb: "images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90_1.png" },
+      { main: "images/imagem12.png",                                         thumb: "images/imagem12_1.png" },
+      { main: "images/imagem03_d011fc14-727f-4cbf-85bd-25e0f4799476_1.png", thumb: "images/imagem03_d011fc14-727f-4cbf-85bd-25e0f4799476.png" },
+      { main: "images/imagem05_9dea59b0-5ca9-4754-be52-a8076d107d90.png",   thumb: "images/imagem05_9dea59b0-5ca9-4754-be52-a8076d107d90_1.png" },
+      { main: "images/imagem14_0c25f272-599f-40e5-ad01-44083c63479f_1.png", thumb: "images/imagem14_0c25f272-599f-40e5-ad01-44083c63479f.png" },
+      { main: "images/imagem01_6a9da22d-b676-4618-ac4f-cf408f643b65.png",   thumb: "images/imagem01_6a9da22d-b676-4618-ac4f-cf408f643b65_1.png" },
+      { main: "images/imagem11_11b47fb4-b19a-42da-93c7-ab4b531a5dc4_1.png", thumb: "images/imagem11_11b47fb4-b19a-42da-93c7-ab4b531a5dc4.png" },
+      { main: "images/imagem07_db7b263f-f8f2-4528-92fd-16349d9a5805_1.png", thumb: "images/imagem07_db7b263f-f8f2-4528-92fd-16349d9a5805.png" },
+      { main: "images/imagem02_4d22c2cd-a495-47b0-a899-fd2e9983f982_1.png", thumb: "images/imagem02_4d22c2cd-a495-47b0-a899-fd2e9983f982.png" },
+      { main: "images/imagem04_23d37638-e411-422e-ab9d-b2b422b57243.png",   thumb: "images/imagem04_23d37638-e411-422e-ab9d-b2b422b57243_1.png" },
+      { main: "images/imagem06_3da5044d-cd30-4e46-81f2-ee8491b79c64_1.png", thumb: "images/imagem06_3da5044d-cd30-4e46-81f2-ee8491b79c64.png" },
+      { main: "images/imagem08_6c32af03-b8d1-48ea-9148-1723ff4ac757_1.png", thumb: "images/imagem08_6c32af03-b8d1-48ea-9148-1723ff4ac757.png" },
+      { main: "images/imagem09_a9bcb182-2c00-4c25-b8f3-cef56efc168b_2.png", thumb: "images/imagem09_a9bcb182-2c00-4c25-b8f3-cef56efc168b_1.png" },
+      { main: "images/imagem13_a9ff316e-7f42-4060-b162-44218bcda92e_1.png", thumb: "images/imagem13_a9ff316e-7f42-4060-b162-44218bcda92e.png" }
+    ];
+
+    var mainImg = document.getElementById('mainImg');
+    var thumbsEl = document.getElementById('thumbs');
+
+    images.forEach(function(img, i) {
+      var t = document.createElement('img');
+      t.src = img.thumb;
+      t.className = 'thumb' + (i === 0 ? ' active' : '');
+      t.alt = '';
+      t.addEventListener('click', function() {
+        mainImg.style.opacity = '0';
+        setTimeout(function() {
+          mainImg.src = img.main;
+          mainImg.style.opacity = '1';
+        }, 180);
+        document.querySelectorAll('.thumb').forEach(function(el) { el.classList.remove('active'); });
+        t.classList.add('active');
+      });
+      thumbsEl.appendChild(t);
+    });
+
+    // ── VIEWERS COUNTER ──
+    var count = 35 + Math.floor(Math.random() * 20);
+    document.getElementById('viewers').textContent = count + ' People are viewing this right now';
+    setInterval(function() {
+      var delta = Math.random() > 0.5 ? 1 : -1;
+      count = Math.max(20, Math.min(60, count + delta));
+      document.getElementById('viewers').textContent = count + ' People are viewing this right now';
+    }, 4000);
+  </script>
+
+</body>
+</html>
