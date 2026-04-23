@@ -670,7 +670,6 @@
 
       <!-- ADD TO CART -->
       <a href="https://11vntb-h1.myshopify.com/checkouts/cn/hWNBL6Ngb0Qcm2e07JOolFr7/pt-br?_r=AQABPdSOHl8_CycR6cIUvIZm5BSr4XejLxxOirwtO4x_eOU" class="atc-btn">Add to Cart</a>
-
       <!-- Payment icons -->
       <div class="payment-icons">
         <div class="pay-icon"><img src="images/visa.svg" alt="Visa"></div>
@@ -900,11 +899,32 @@
       mobileTrack.appendChild(mt);
     });
 
-    // ── BUNDLE SELECTION ──
+    // ── CHECKOUT LINKS (variante + bundle) ──
+    var checkoutLinks = {
+      'Nylon': [
+        'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBL6Ngb0Qcm2e07JOolFr7/pt-br?_r=AQABPdSOHl8_CycR6cIUvIZm5BSr4XejLxxOirwtO4x_eOU',
+        'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLAAVdUN2YFFOhEUxqmf4/pt-br?_r=AQABmNjsnR-l9dcttc0UpL3XQ8ENplnmJhhERMSWwQ9yqOY',
+        'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLAMiMikUKaePtNo9ez7C/pt-br?_r=AQABvX_mITi7y8J69QvIah3cviDJBaQviIOBLGaZKzdPAIE'
+      ],
+      'Stainless steel': [
+        'https://11vntb-h1.myshopify.com/products/produto-04?utm_source=copyToPasteBoard&utm_medium=product-links&utm_content=web',
+        'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLE4RDt8yHTxVD6JEGASI/pt-br?_r=AQABVU9Mi757Wh3NKH6GpuZGOICzHWDv5-2_d21ETLZyh_0',
+        'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLE4RDt8yHTxVD6JEGASI/pt-br?_r=AQABo3So8fwyGiG8Csa_cRSPvpl7rJuQs2REGofRcNINyXk'
+      ]
+    };
+
+    var selectedVariant = 'Nylon';
+    var selectedBundle = 0;
+
+    function updateATCLink() {
+      var link = checkoutLinks[selectedVariant][selectedBundle];
+      document.querySelector('.atc-btn').href = link;
+    }
+
     var bundlePrices = [
-      { main: '£76.90',  compare: '£230.90',  link: 'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBL6Ngb0Qcm2e07JOolFr7/pt-br?_r=AQABPdSOHl8_CycR6cIUvIZm5BSr4XejLxxOirwtO4x_eOU' },
-      { main: '£130.74', compare: '£461.80',  link: 'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLAAVdUN2YFFOhEUxqmf4/pt-br?_r=AQABmNjsnR-l9dcttc0UpL3XQ8ENplnmJhhERMSWwQ9yqOY' },
-      { main: '£184.50', compare: '£692.70',  link: 'https://11vntb-h1.myshopify.com/checkouts/cn/hWNBLAMiMikUKaePtNo9ez7C/pt-br?_r=AQABvX_mITi7y8J69QvIah3cviDJBaQviIOBLGaZKzdPAIE' }
+      { main: '£76.90',  compare: '£230.90' },
+      { main: '£130.74', compare: '£461.80' },
+      { main: '£184.50', compare: '£692.70' }
     ];
 
     document.querySelectorAll('.bundle-option').forEach(function(opt, i) {
@@ -915,13 +935,10 @@
         });
         this.classList.add('selected');
         this.querySelector('.bundle-radio').classList.add('selected');
-
-        // Atualiza preço principal
         document.querySelector('.price-compare').textContent = bundlePrices[i].compare;
         document.querySelector('.price-main').textContent = bundlePrices[i].main;
-
-        // Atualiza link do botão ADD TO CART
-        document.querySelector('.atc-btn').href = bundlePrices[i].link;
+        selectedBundle = i;
+        updateATCLink();
       });
     });
 
@@ -950,6 +967,10 @@
             }
           });
         }
+
+        // Atualiza variante e link do botão
+        selectedVariant = variant;
+        updateATCLink();
       });
     });
 
