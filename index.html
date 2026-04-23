@@ -108,6 +108,11 @@
       max-height: 540px;
       overflow: hidden;
     }
+    .thumbs-track {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
     .thumb {
       width: 72px;
       height: 72px;
@@ -127,6 +132,49 @@
       max-height: 580px;
       transition: opacity 0.2s;
       border-radius: 2px;
+    }
+
+    /* ── MOBILE GALLERY ── */
+    .mobile-gallery { display: none; }
+
+    @media (max-width: 600px) {
+      /* Esconde galeria desktop */
+      .gallery { display: none; }
+
+      /* Exibe galeria mobile */
+      .mobile-gallery {
+        display: block;
+        width: 100%;
+      }
+      .mobile-main-img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: contain;
+        display: block;
+        transition: opacity 0.2s;
+      }
+      .mobile-thumbs-wrap {
+        width: 100%;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .mobile-thumbs-track {
+        display: flex;
+        gap: 6px;
+        transition: transform 0.35s ease;
+        will-change: transform;
+      }
+      .mobile-thumb {
+        flex-shrink: 0;
+        width: calc((100vw - 48px) / 4);
+        height: calc((100vw - 48px) / 4);
+        object-fit: cover;
+        border-radius: 2px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.15s;
+      }
+      .mobile-thumb.active { border-color: #1a1a1a; }
     }
 
     /* ── PRODUCT INFO ── */
@@ -475,34 +523,6 @@
       footer { padding: 40px 16px 24px; }
     }
     @media (max-width: 600px) {
-      /* Galeria — foto em cima, miniaturas em carrossel embaixo */
-      .gallery { flex-direction: column; gap: 10px; }
-      .thumbs {
-        flex-direction: row;
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        max-height: none;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding-bottom: 0;
-      }
-      .thumbs::-webkit-scrollbar { display: none; }
-      .thumbs-track {
-        display: flex;
-        flex-direction: row;
-        gap: 6px;
-        width: max-content;
-      }
-      .thumb {
-        width: calc((100vw - 48px) / 4);
-        height: calc((100vw - 48px) / 4);
-        flex-shrink: 0;
-        scroll-snap-align: start;
-      }
-      .main-img-wrap img { max-height: 360px; object-fit: contain; }
-
       /* Produto */
       .product-title { font-size: 20px; }
       .price-main { font-size: 20px; }
@@ -511,11 +531,9 @@
       .bundle-name { font-size: 13px; }
       .bundle-price-main { font-size: 14px; }
       .atc-btn { padding: 16px; font-size: 14px; letter-spacing: 0.08em; }
-
       /* Footer */
       .footer-grid { grid-template-columns: 1fr; gap: 24px; }
       .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
-
       /* Announce */
       .announce-bar { font-size: 11px; padding: 8px 0; }
     }
@@ -556,11 +574,19 @@
   <!-- PRODUCT -->
   <div class="product-wrapper">
 
-    <!-- GALLERY -->
+    <!-- GALLERY DESKTOP -->
     <div class="gallery">
       <div class="thumbs" id="thumbs"><div class="thumbs-track" id="thumbsTrack"></div></div>
       <div class="main-img-wrap">
         <img id="mainImg" src="images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png" alt="Omega Speedmaster Silver Snoopy">
+      </div>
+    </div>
+
+    <!-- GALLERY MOBILE -->
+    <div class="mobile-gallery">
+      <img id="mobileMainImg" class="mobile-main-img" src="images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png" alt="Omega Speedmaster Silver Snoopy">
+      <div class="mobile-thumbs-wrap">
+        <div class="mobile-thumbs-track" id="mobileThumbsTrack"></div>
       </div>
     </div>
 
@@ -815,36 +841,63 @@
     ];
 
     var mainImg = document.getElementById('mainImg');
-    var thumbsEl = document.getElementById('thumbs');
+    var mobileMainImg = document.getElementById('mobileMainImg');
     var thumbsTrack = document.getElementById('thumbsTrack');
+    var mobileTrack = document.getElementById('mobileThumbsTrack');
+    var mobileCurrentPage = 0;
+    var THUMBS_PER_PAGE = 4;
+
+    function switchImage(src) {
+      // Desktop
+      mainImg.style.opacity = '0';
+      setTimeout(function() { mainImg.src = src; mainImg.style.opacity = '1'; }, 180);
+      // Mobile
+      mobileMainImg.style.opacity = '0';
+      setTimeout(function() { mobileMainImg.src = src; mobileMainImg.style.opacity = '1'; }, 180);
+    }
+
+    function updateMobileCarousel() {
+      var thumbWidth = (window.innerWidth - 48) / THUMBS_PER_PAGE + 6;
+      mobileTrack.style.transform = 'translateX(-' + (mobileCurrentPage * THUMBS_PER_PAGE * thumbWidth) + 'px)';
+    }
 
     images.forEach(function(img, i) {
+      // ── DESKTOP THUMB ──
       var t = document.createElement('img');
       t.src = img.thumb;
       t.className = 'thumb' + (i === 0 ? ' active' : '');
       t.alt = '';
       t.addEventListener('click', function() {
-        // Troca imagem principal
-        mainImg.style.opacity = '0';
-        setTimeout(function() {
-          mainImg.src = img.main;
-          mainImg.style.opacity = '1';
-        }, 180);
-
-        // Destaca miniatura
+        switchImage(img.main);
         document.querySelectorAll('.thumb').forEach(function(el) { el.classList.remove('active'); });
         t.classList.add('active');
-
-        // Scroll automático para manter a miniatura visível
-        if (window.innerWidth <= 600) {
-          var thumbWidth = t.offsetWidth + 6;
-          var visibleWidth = thumbsEl.offsetWidth;
-          var thumbsPerPage = Math.floor(visibleWidth / thumbWidth);
-          var page = Math.floor(i / thumbsPerPage);
-          thumbsEl.scrollTo({ left: page * thumbsPerPage * thumbWidth, behavior: 'smooth' });
-        }
       });
       thumbsTrack.appendChild(t);
+
+      // ── MOBILE THUMB ──
+      var mt = document.createElement('img');
+      mt.src = img.thumb;
+      mt.className = 'mobile-thumb' + (i === 0 ? ' active' : '');
+      mt.alt = '';
+      mt.addEventListener('click', function() {
+        switchImage(img.main);
+        document.querySelectorAll('.mobile-thumb').forEach(function(el) { el.classList.remove('active'); });
+        mt.classList.add('active');
+
+        // Avança página se clicou na última miniatura da página atual
+        var pageEnd = (mobileCurrentPage + 1) * THUMBS_PER_PAGE - 1;
+        var pageStart = mobileCurrentPage * THUMBS_PER_PAGE;
+        var totalPages = Math.ceil(images.length / THUMBS_PER_PAGE);
+
+        if (i === pageEnd && mobileCurrentPage < totalPages - 1) {
+          mobileCurrentPage++;
+          updateMobileCarousel();
+        } else if (i === pageStart && mobileCurrentPage > 0) {
+          mobileCurrentPage--;
+          updateMobileCarousel();
+        }
+      });
+      mobileTrack.appendChild(mt);
     });
 
     // ── BUNDLE SELECTION ──
@@ -888,11 +941,7 @@
         document.querySelector('.variant-label').innerHTML = 'Watch Strap Material: <strong>' + variant.toUpperCase() + '</strong>';
 
         if (variantImages[variant]) {
-          mainImg.style.opacity = '0';
-          setTimeout(function() {
-            mainImg.src = variantImages[variant].main;
-            mainImg.style.opacity = '1';
-          }, 180);
+          switchImage(variantImages[variant].main);
 
           document.querySelectorAll('.thumb').forEach(function(t) {
             t.classList.remove('active');
