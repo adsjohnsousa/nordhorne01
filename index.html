@@ -796,7 +796,13 @@
     });
 
     // ── BUNDLE SELECTION ──
-    document.querySelectorAll('.bundle-option').forEach(function(opt) {
+    var bundlePrices = [
+      { main: '$76.90',  compare: '$230.90' },
+      { main: '$130.74', compare: '$461.80' },
+      { main: '$184.50', compare: '$692.70' }
+    ];
+
+    document.querySelectorAll('.bundle-option').forEach(function(opt, i) {
       opt.addEventListener('click', function() {
         document.querySelectorAll('.bundle-option').forEach(function(o) {
           o.classList.remove('selected');
@@ -804,6 +810,10 @@
         });
         this.classList.add('selected');
         this.querySelector('.bundle-radio').classList.add('selected');
+
+        // Atualiza preço principal
+        document.querySelector('.price-compare').textContent = bundlePrices[i].compare;
+        document.querySelector('.price-main').textContent = bundlePrices[i].main;
       });
     });
 
