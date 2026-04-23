@@ -67,7 +67,7 @@
       z-index: 100;
     }
     .logo img {
-      height: 36px;
+      height: 24px;
       width: auto;
       display: block;
     }
@@ -465,19 +465,49 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .product-wrapper { grid-template-columns: 1fr; gap: 32px; }
+      .product-wrapper { grid-template-columns: 1fr; gap: 24px; padding: 0 16px; margin: 20px auto; }
       .shipping-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       nav { display: none; }
-      header { padding: 0 20px; }
-      .product-wrapper { padding: 0 20px; }
-      .tabs-section { padding: 0 20px; }
+      header { padding: 0 16px; height: 52px; }
+      .tabs-section { padding: 0 16px; }
+      .shipping-section { padding: 32px 16px; }
+      footer { padding: 40px 16px 24px; }
     }
-    @media (max-width: 560px) {
-      .shipping-grid { grid-template-columns: 1fr 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-      .bundle-option { flex-wrap: wrap; }
+    @media (max-width: 600px) {
+      /* Galeria — foto em cima, miniaturas em carrossel embaixo */
+      .gallery { flex-direction: column-reverse; gap: 10px; }
+      .thumbs {
+        flex-direction: row;
+        width: 100%;
+        overflow: hidden;
+        max-height: none;
+        position: relative;
+      }
+      .thumbs-track {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        transition: transform 0.3s ease;
+      }
+      .thumb { width: calc((100vw - 48px) / 4); height: calc((100vw - 48px) / 4); flex-shrink: 0; }
+      .main-img-wrap img { max-height: 320px; }
+
+      /* Produto */
+      .product-title { font-size: 20px; }
+      .price-main { font-size: 20px; }
+      .price-compare { font-size: 15px; }
+      .bundle-option { padding: 10px 12px; }
+      .bundle-name { font-size: 13px; }
+      .bundle-price-main { font-size: 14px; }
+      .atc-btn { padding: 16px; font-size: 14px; letter-spacing: 0.08em; }
+
+      /* Footer */
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+
+      /* Announce */
+      .announce-bar { font-size: 11px; padding: 8px 0; }
     }
   </style>
 </head>
@@ -518,7 +548,7 @@
 
     <!-- GALLERY -->
     <div class="gallery">
-      <div class="thumbs" id="thumbs"></div>
+      <div class="thumbs" id="thumbs"><div class="thumbs-track" id="thumbsTrack"></div></div>
       <div class="main-img-wrap">
         <img id="mainImg" src="images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png" alt="Omega Speedmaster Silver Snoopy">
       </div>
@@ -775,7 +805,11 @@
     ];
 
     var mainImg = document.getElementById('mainImg');
-    var thumbsEl = document.getElementById('thumbs');
+    var thumbsTrack = document.getElementById('thumbsTrack');
+
+    var currentPage = 0;
+    var thumbsPerPage = 4;
+    var isMobile = function() { return window.innerWidth <= 600; };
 
     images.forEach(function(img, i) {
       var t = document.createElement('img');
@@ -790,9 +824,32 @@
         }, 180);
         document.querySelectorAll('.thumb').forEach(function(el) { el.classList.remove('active'); });
         t.classList.add('active');
+
+        // Se mobile e clicou na última visível, avança o carrossel
+        if (isMobile()) {
+          var visibleEnd = (currentPage + 1) * thumbsPerPage - 1;
+          if (i === visibleEnd && visibleEnd < images.length - 1) {
+            currentPage++;
+            updateCarousel();
+          }
+          // Se clicou na primeira visível e não está na primeira página, volta
+          var visibleStart = currentPage * thumbsPerPage;
+          if (i === visibleStart && currentPage > 0) {
+            currentPage--;
+            updateCarousel();
+          }
+        }
       });
-      thumbsEl.appendChild(t);
+      thumbsTrack.appendChild(t);
     });
+
+    function updateCarousel() {
+      if (!isMobile()) return;
+      var thumbWidth = thumbsTrack.querySelector('.thumb').offsetWidth + 6; // width + gap
+      thumbsTrack.style.transform = 'translateX(-' + (currentPage * thumbsPerPage * thumbWidth) + 'px)';
+    }
+
+    window.addEventListener('resize', updateCarousel);
 
     // ── BUNDLE SELECTION ──
     var bundlePrices = [
