@@ -779,6 +779,38 @@
       thumbsEl.appendChild(t);
     });
 
+    // ── VARIANT SWITCH ──
+    var variantImages = {
+      'Nylon':           { main: 'images/imagem12.png', thumb: 'images/imagem12_1.png' },
+      'Stainless steel': { main: 'images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90.png', thumb: 'images/imagem10_69ede61f-327b-4ceb-bb40-bca4edc26d90_1.png' }
+    };
+
+    document.querySelectorAll('.variant-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var variant = this.textContent.trim();
+
+        document.querySelectorAll('.variant-btn').forEach(function(b) { b.classList.remove('selected'); });
+        this.classList.add('selected');
+
+        document.querySelector('.variant-label').innerHTML = 'Watch Strap Material: <strong>' + variant.toUpperCase() + '</strong>';
+
+        if (variantImages[variant]) {
+          mainImg.style.opacity = '0';
+          setTimeout(function() {
+            mainImg.src = variantImages[variant].main;
+            mainImg.style.opacity = '1';
+          }, 180);
+
+          document.querySelectorAll('.thumb').forEach(function(t) {
+            t.classList.remove('active');
+            if (t.src.indexOf(variantImages[variant].thumb.split('/').pop()) !== -1) {
+              t.classList.add('active');
+            }
+          });
+        }
+      });
+    });
+
     // ── VIEWERS COUNTER ──
     var count = 35 + Math.floor(Math.random() * 20);
     document.getElementById('viewers').textContent = count + ' People are viewing this right now';
