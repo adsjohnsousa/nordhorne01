@@ -103,18 +103,22 @@
     .thumbs {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      width: 76px;
+      gap: 6px;
+      width: 72px;
       flex-shrink: 0;
+      max-height: 540px;
+      overflow: hidden;
     }
     .thumb {
-      width: 76px;
-      height: 76px;
+      width: 72px;
+      height: 72px;
       object-fit: cover;
+      object-position: center;
       cursor: pointer;
       border: 2px solid transparent;
       transition: border-color 0.15s;
       border-radius: 2px;
+      flex-shrink: 0;
     }
     .thumb.active { border-color: var(--black); }
     .main-img-wrap { flex: 1; }
