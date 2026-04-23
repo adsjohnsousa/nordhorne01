@@ -280,14 +280,29 @@
     .payment-icons {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
     .pay-icon {
-      height: 26px;
+      height: 28px;
       border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 3px 6px;
+      border-radius: 4px;
+      padding: 3px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+    }
+    .pay-icon img {
+      height: 18px;
+      width: auto;
+      display: block;
+    }
+    .pay-icon-text {
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -593,13 +608,14 @@
 
       <!-- Payment icons -->
       <div class="payment-icons">
-        <div class="pay-icon">VISA</div>
-        <div class="pay-icon">MC</div>
-        <div class="pay-icon">AMEX</div>
-        <div class="pay-icon">PayPal</div>
-        <div class="pay-icon">Apple Pay</div>
-        <div class="pay-icon">Google Pay</div>
-        <div class="pay-icon">Shop</div>
+        <div class="pay-icon"><img src="images/visa.svg" alt="Visa"></div>
+        <div class="pay-icon"><img src="images/master.svg" alt="Mastercard"></div>
+        <div class="pay-icon"><img src="images/american_express.svg" alt="Amex"></div>
+        <div class="pay-icon"><img src="images/paypal.svg" alt="PayPal"></div>
+        <div class="pay-icon"><img src="images/apple_pay.svg" alt="Apple Pay"></div>
+        <div class="pay-icon"><img src="images/google_pay.svg" alt="Google Pay"></div>
+        <div class="pay-icon"><img src="images/shopify_pay.svg" alt="Shop Pay"></div>
+        <div class="pay-icon"><img src="images/amazon.svg" alt="Amazon"></div>
       </div>
 
     </div>
@@ -777,6 +793,18 @@
         t.classList.add('active');
       });
       thumbsEl.appendChild(t);
+    });
+
+    // ── BUNDLE SELECTION ──
+    document.querySelectorAll('.bundle-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        document.querySelectorAll('.bundle-option').forEach(function(o) {
+          o.classList.remove('selected');
+          o.querySelector('.bundle-radio').classList.remove('selected');
+        });
+        this.classList.add('selected');
+        this.querySelector('.bundle-radio').classList.add('selected');
+      });
     });
 
     // ── VARIANT SWITCH ──
